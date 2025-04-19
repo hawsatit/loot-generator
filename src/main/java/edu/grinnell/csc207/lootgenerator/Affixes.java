@@ -43,7 +43,7 @@ public class Affixes {
      * 
      * @return String
      */
-    public String getmod() {
+    public String getMod() {
         return mod1code;
     }
 
