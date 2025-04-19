@@ -9,7 +9,7 @@ package edu.grinnell.csc207.lootgenerator;
  * @author fui
  */
 public class TreasureClass {
-    private String className;
+    private final String className;
     private final String item1;
     private final String item2;
     private final String item3;
@@ -29,18 +29,38 @@ public class TreasureClass {
         this.item3 = item3;
     }
     
+    /**
+     * returns the name of the TreasureClass
+     * 
+     * @return String
+     */
     public String getName() {
         return className;
     }
     
+    /**
+     * returns the first possible drop
+     * 
+     * @return String
+     */
     public String getItem1(){
         return this.item1;
     }
     
+    /**
+     * returns the second possible drop
+     * 
+     * @return String
+     */
     public String getItem2(){
         return this.item2;
     }
     
+    /**
+     * returns the third possible drop
+     * 
+     * @return String
+     */
     public String getItem3(){
         return this.item3;
     }
