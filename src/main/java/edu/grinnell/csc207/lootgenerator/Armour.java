@@ -9,7 +9,7 @@ package edu.grinnell.csc207.lootgenerator;
  * @author fui
  */
 public class Armour {
-    private String name;
+    private final String name;
     private int minVal;
     private int maxVal;
 
