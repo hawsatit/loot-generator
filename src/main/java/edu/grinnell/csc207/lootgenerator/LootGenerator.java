@@ -1,7 +1,6 @@
 package edu.grinnell.csc207.lootgenerator;
 
 import java.io.IOException;
-import static java.lang.Math.random;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -9,29 +8,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * The helper functions for the driver and the driver.
+ * 
+ * @author fui
+ */
 public class LootGenerator {
     /** The path to the dataset (either the small or large set). */
     private static final String DATA_SET = "data/small";
-    
+
     /**
-     * Picks a random monster from a list of monsters
+     * Picks a random monster from a list of monsters.
      * 
      * @param monsters a List of monsters
-     * @return Monster 
+     * @return a randomly selected Monster
      */
     private static Monster pickMonster(List<Monster> monsters) {
-        int n = (int)(Math.random() * monsters.size());
+        int n = (int) (Math.random() * monsters.size());
         return monsters.get(n);
     }
-    
+
     /**
-     * gives the TreasureClass of the name passed in
+     * Gives the TreasureClass of the name passed in.
      * 
      * @param tcName The name of the TreasureClass trying to fetch
-     * @param treasureClasses The Map<String, TreasureClass> of all the possible treasureClasses
-     * @return TreasureClass 
+     * @param treasureClasses The map of treasure class names to TreasureClass objects
+     * @return the TreasureClass corresponding to tcName
      */
-    private static TreasureClass fetchTreasureClass(String tcName, Map<String, TreasureClass> treasureClasses) {
+    private static TreasureClass fetchTreasureClass(
+        String tcName, Map<String, TreasureClass> treasureClasses
+    ) {
         TreasureClass tc = treasureClasses.get(tcName);
         if (tc == null) {
             throw new IllegalArgumentException("Unknown Treasure Class: " + tcName);
@@ -39,17 +45,19 @@ public class LootGenerator {
             return tc;
         }
     }
-    
+
     /**
-     * Randomly gets the base item. If the selected one from the TreasureClass is a TreasureClass, 
-     * then perform this on that TreasureClass until the base item is given.
+     * Randomly gets the base item. If the selected one from the TreasureClass is a
+     * TreasureClass, then perform this on that TreasureClass until the base item is given.
      * 
      * @param treasureClass The TreasureClass you are trying to get the item from
-     * @param treasureClasses The Map<String, TreasureClass> of all the possible treasureClasses
-     * @return 
+     * @param treasureClasses all the possible treasureClasses
+     * @return the name of the base item dropped
      */
-    private static String generateBaseItem(TreasureClass treasureClass, Map<String, TreasureClass> treasureClasses) {
-        int n = (int)(Math.random() * 3);
+    private static String generateBaseItem(
+        TreasureClass treasureClass, Map<String, TreasureClass> treasureClasses
+    ) {
+        int n = (int) (Math.random() * 3);
 
         String item = switch (n) {
             case 0 -> treasureClass.getItem1();
@@ -64,33 +72,42 @@ public class LootGenerator {
             return item;
         }
     }
-    
+
     /**
-     * Generate Stats for the item as a string, based on the armour passed in
+     * Generate Stats for the item as a string, based on the armour passed in.
      * 
-     * @param baseItem The name of the item 
+     * @param baseItem The name of the item
      * @param armours The armour value of the item
-     * @return String
+     * @return base stats of the item as a string
      */
-    private static String generateBaseStats(String baseItem, Map<String, Armour> armours) {
-        // For this example, we assume the baseItem corresponds to an Armour entry in the armours map
+    private static String generateBaseStats(
+        String baseItem, Map<String, Armour> armours
+    ) {
         Armour armour = armours.get(baseItem);
         if (armour != null) {
-            int defense = (int)(Math.random() * (armour.getMax() - armour.getMin() + 1) + armour.getMin());
+            int defense = (int) (
+                Math.random()
+                * (armour.getMax() - armour.getMin() + 1)
+                + armour.getMin()
+            );
             return "Defense: " + defense;
         }
         return "No stats available.";
     }
-    
+
     /**
-     * Generates the suffix and preffix as a string based on the 
-     * suffix and preffix passed in as an Affixes (random value between min and max)
+     * Generates the suffix and prefix as a string based on the suffix and prefix
+     * passed in as Affixes (random value between min and max). Formats the message.
      * 
      * @param prefixes the prefixes of the item 
      * @param suffixes the suffixes of the item
-     * @return String
+     * @param item The name of the item with affixes
+     * @param base The base stats string
+     * @return formatted string describing the item with affixes and stats
      */
-    private static String generateAffixesFormat(List<Affixes> prefixes, List<Affixes> suffixes, String item, String base) {
+    private static String generateAffixesFormat(
+        List<Affixes> prefixes, List<Affixes> suffixes, String item, String base
+    ) {
         Random rand = new Random();
         String prefix = "";
         String suffix = "";
@@ -98,35 +115,45 @@ public class LootGenerator {
         String suffixStats = "";
 
         if (rand.nextBoolean()) {
-            int prefixIndex = (int)(Math.random() * prefixes.size());
+            int prefixIndex = (int) (Math.random() * prefixes.size());
             Affixes selectedPrefix = prefixes.get(prefixIndex);
-            int value = (int)(Math.random() * (selectedPrefix.getMax() - selectedPrefix.getMin() + 1) + selectedPrefix.getMin());
+            int value = (int) (
+                Math.random()
+                * (selectedPrefix.getMax() - selectedPrefix.getMin() + 1)
+                + selectedPrefix.getMin()
+            );
             prefix = selectedPrefix.getName();
             prefixStats = value + " " + selectedPrefix.getMod();
-            
         }
 
         if (rand.nextBoolean()) {
-            int suffixIndex = (int)(Math.random() * suffixes.size());
+            int suffixIndex = (int) (Math.random() * suffixes.size());
             Affixes selectedSuffix = suffixes.get(suffixIndex);
-            int value = (int)(Math.random() * (selectedSuffix.getMax() - selectedSuffix.getMin() + 1) + selectedSuffix.getMin());
+            int value = (int) (
+                Math.random()
+                * (selectedSuffix.getMax() - selectedSuffix.getMin() + 1)
+                + selectedSuffix.getMin()
+            );
             suffix = selectedSuffix.getName();
             suffixStats = value + " " + selectedSuffix.getMod();
         }
 
-        return prefix + (prefix.isEmpty() ? "" : " ") + item + " " + suffix + "\n" + base + (prefixStats.isEmpty() && suffixStats.isEmpty() ? "" : "\n") + (prefixStats.isEmpty() ? "" : prefixStats + " ") + (suffixStats.isEmpty() ? "" : suffixStats);
+        return prefix + (prefix.isEmpty() ? "" : " ") + item + " " + suffix + "\n"
+            + base + (prefixStats.isEmpty() && suffixStats.isEmpty() ? "" : "\n")
+            + (prefixStats.isEmpty() ? "" : prefixStats + " ")
+            + (suffixStats.isEmpty() ? "" : suffixStats);
     }
 
     /**
+     * The main driver for the loot generator.
      * 
-     * @param args 
+     * @param args Command-line arguments (not used)
      */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         Boolean playing = true;
         while (playing) {
-            
             // Initialize data for each round
             List<Monster> monsters = new ArrayList<>();
             Map<String, TreasureClass> treasureClasses = new HashMap<>();
@@ -177,7 +204,9 @@ public class LootGenerator {
                 if (userResponse.equals("y") || userResponse.equals("n")) {
                     break;
                 } else {
-                    System.out.println("Invalid response. Please enter 'y' to fight again or 'n' to quit.");
+                    System.out.println(
+                        "Invalid response. Please enter 'y' to fight again or 'n' to quit."
+                    );
                 }
             }
 
