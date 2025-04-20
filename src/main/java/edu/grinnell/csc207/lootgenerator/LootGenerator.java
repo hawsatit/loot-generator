@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class LootGenerator {
     /** The path to the dataset (either the small or large set). */
-    private static final String DATA_SET = "data/large";
+    private static final String DATA_SET = "data/small";
     
     /**
      * Picks a random monster from a list of monsters
@@ -90,26 +90,31 @@ public class LootGenerator {
      * @param suffixes the suffixes of the item
      * @return String
      */
-    private static String generateAffixes(List<Affixes> prefixes, List<Affixes> suffixes) {
+    private static String generateAffixesFormat(List<Affixes> prefixes, List<Affixes> suffixes, String item, String base) {
         Random rand = new Random();
         String prefix = "";
         String suffix = "";
+        String prefixStats = "";
+        String suffixStats = "";
 
         if (rand.nextBoolean()) {
             int prefixIndex = (int)(Math.random() * prefixes.size());
             Affixes selectedPrefix = prefixes.get(prefixIndex);
             int value = (int)(Math.random() * (selectedPrefix.getMax() - selectedPrefix.getMin() + 1) + selectedPrefix.getMin());
-            prefix = selectedPrefix.getName() + " " + value + " " + selectedPrefix.getMod();
+            prefix = selectedPrefix.getName();
+            prefixStats = value + " " + selectedPrefix.getMod();
+            
         }
 
         if (rand.nextBoolean()) {
             int suffixIndex = (int)(Math.random() * suffixes.size());
             Affixes selectedSuffix = suffixes.get(suffixIndex);
             int value = (int)(Math.random() * (selectedSuffix.getMax() - selectedSuffix.getMin() + 1) + selectedSuffix.getMin());
-            suffix = selectedSuffix.getName() + " " + value + " " + selectedSuffix.getMod();
+            suffix = selectedSuffix.getName();
+            suffixStats = value + " " + selectedSuffix.getMod();
         }
 
-        return prefix + (prefix.isEmpty() ? "" : " ") + suffix;
+        return prefix + (prefix.isEmpty() ? "" : " ") + item + " " + suffix + "\n" + base + (prefixStats.isEmpty() && suffixStats.isEmpty() ? "" : prefixStats + "\n") + (prefixStats.isEmpty() ? "" : prefixStats + " ") + (suffixStats.isEmpty() ? "" : suffixStats);
     }
 
     /**
@@ -117,7 +122,6 @@ public class LootGenerator {
      * @param args 
      */
     public static void main(String[] args) {
-        System.out.println("This program kills monsters and generates loot!");
         Scanner scanner = new Scanner(System.in);
 
         Boolean playing = true;
@@ -159,11 +163,9 @@ public class LootGenerator {
 
             // Generate Stats for that item
             String baseStats = generateBaseStats(baseItem, armours);
-            System.out.println(baseItem);
-            System.out.println(baseStats);
 
-            // Generate affixes (prefixes and suffixes)
-            String affixes = generateAffixes(prefixes, suffixes);
+            // Generate affixes (prefixes and suffixes) and formats the print
+            String affixes = generateAffixesFormat(prefixes, suffixes, baseItem, baseStats);
             System.out.println(affixes);
 
             // Ask the user if they wish to fight again
