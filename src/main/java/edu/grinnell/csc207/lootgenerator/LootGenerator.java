@@ -114,7 +114,7 @@ public class LootGenerator {
             suffixStats = value + " " + selectedSuffix.getMod();
         }
 
-        return prefix + (prefix.isEmpty() ? "" : " ") + item + " " + suffix + "\n" + base + (prefixStats.isEmpty() && suffixStats.isEmpty() ? "" : "\n" + prefixStats) + (prefixStats.isEmpty() ? "" : prefixStats + " ") + (suffixStats.isEmpty() ? "" : suffixStats);
+        return prefix + (prefix.isEmpty() ? "" : " ") + item + " " + suffix + "\n" + base + (prefixStats.isEmpty() && suffixStats.isEmpty() ? "" : "\n") + (prefixStats.isEmpty() ? "" : prefixStats + " ") + (suffixStats.isEmpty() ? "" : suffixStats);
     }
 
     /**
