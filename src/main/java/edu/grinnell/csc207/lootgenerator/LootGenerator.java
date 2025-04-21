@@ -14,7 +14,9 @@ import java.util.Scanner;
  * @author fui
  */
 public class LootGenerator {
-    /** The path to the dataset (either the small or large set). */
+    /**
+     * The path to the dataset (either the small or large set).
+     */
     private static final String DATA_SET = "data/small";
 
     /**
