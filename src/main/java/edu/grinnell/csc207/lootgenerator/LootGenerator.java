@@ -25,7 +25,7 @@ public class LootGenerator {
      * @param monsters a List of monsters
      * @return a randomly selected Monster
      */
-    private static Monster pickMonster(List<Monster> monsters) {
+    public static Monster pickMonster(List<Monster> monsters) {
         int n = (int) (Math.random() * monsters.size());
         return monsters.get(n);
     }
@@ -37,7 +37,7 @@ public class LootGenerator {
      * @param treasureClasses The map of treasure class names to TreasureClass objects
      * @return the TreasureClass corresponding to tcName
      */
-    private static TreasureClass fetchTreasureClass(
+    public static TreasureClass fetchTreasureClass(
         String tcName, Map<String, TreasureClass> treasureClasses
     ) {
         TreasureClass tc = treasureClasses.get(tcName);
@@ -56,7 +56,7 @@ public class LootGenerator {
      * @param treasureClasses all the possible treasureClasses
      * @return the name of the base item dropped
      */
-    private static String generateBaseItem(
+    public static String generateBaseItem(
         TreasureClass treasureClass, Map<String, TreasureClass> treasureClasses
     ) {
         int n = (int) (Math.random() * 3);
@@ -82,7 +82,7 @@ public class LootGenerator {
      * @param armours The armour value of the item
      * @return base stats of the item as a string
      */
-    private static String generateBaseStats(
+    public static String generateBaseStats(
         String baseItem, Map<String, Armour> armours
     ) {
         Armour armour = armours.get(baseItem);
@@ -107,7 +107,7 @@ public class LootGenerator {
      * @param base The base stats string
      * @return formatted string describing the item with affixes and stats
      */
-    private static String generateAffixesFormat(
+    public static String generateAffixesFormat(
         List<Affixes> prefixes, List<Affixes> suffixes, String item, String base
     ) {
         Random rand = new Random();
